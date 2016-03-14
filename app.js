@@ -2,12 +2,11 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var urlHelper = require("./route.js");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoHelper = require("./utils/mongoUtils");
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var rederect = require('./routes/rederect');
 var app = express();
 
 // view engine setup
@@ -20,11 +19,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
-app.use('/rederect', rederect);
+//设置路由
+urlHelper.setRequestUrl(app);
+
+
+mongoHelper.connect(function(error){
+  console.log("mongo connect")
+  if (error) throw error;
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
