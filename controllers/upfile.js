@@ -10,8 +10,7 @@ var upfile = function (req, res) {
 	form.parse(req, function (err, fields, files){
 		var filesTmp = JSON.stringify(files,null,2);
 		if (err){
-			console.log('parse error: ' + err);
-			res.send("写文件操作失败。");
+			console.log('parse error: ' + err);;
 		}else {
 			//res.send("文件上传成功");
 			console.log('parse files: ' + filesTmp);
